@@ -35,9 +35,9 @@ Each skill MUST follow this structure:
 your-skill/
 ├── SKILL.md              # Required: Skill definition
 ├── README.md             # Required: Detailed documentation
-├── scripts/              # Required: At least one script
+├── scripts/              # Optional: Python tool implementations
 │   ├── main_tool.py      # Primary tool implementation
-│   └── helper.py         # Optional helper scripts
+│   └── helper.py         # Helper scripts
 └── references/           # Optional: Additional docs
     └── api_reference.md
 ```
@@ -87,9 +87,9 @@ Detailed documentation including:
 - Error handling
 - Examples for each use case
 
-### Scripts (Required)
+### Scripts (Optional)
 
-At least one Python script implementing the tool. Must follow SpoonOS patterns:
+If your skill includes Python tools, they should follow SpoonOS patterns:
 
 ```python
 #!/usr/bin/env python3
@@ -147,8 +147,10 @@ Your PR description MUST include the following sections:
 
 ### Agent Configuration
 
+We recommend using SpoonReactSkill, but you can also test with other skill-enabled agents like **Claude Code**.
+
+**Option 1: SpoonReactSkill (Recommended)**
 ```python
-# Show the agent setup
 from spoon_ai.agents import SpoonReactSkill
 
 agent = SpoonReactSkill(
@@ -157,6 +159,17 @@ agent = SpoonReactSkill(
     scripts_enabled=True
 )
 await agent.activate_skill("your-skill-name")
+```
+
+**Option 2: Claude Code**
+```
+# Copy skill to your workspace
+cp -r your-skill/ .claude/skills/
+
+# Or for agent workspace
+cp -r your-skill/ .agent/skills/
+
+# Then use the skill via Claude Code's skill system
 ```
 
 ### Input Prompt
@@ -216,20 +229,19 @@ Example screenshot requirements:
 
 - [ ] SKILL.md follows the required format
 - [ ] README.md includes detailed documentation
-- [ ] At least one script in `scripts/` directory
-- [ ] Scripts follow SpoonOS BaseTool pattern
-- [ ] Environment variables documented
+- [ ] Scripts (if included) follow SpoonOS BaseTool pattern
+- [ ] Environment variables documented (if applicable)
 - [ ] **Screenshots of running example included**
 - [ ] No API keys or secrets committed
 ```
 
 ### 3. Required Demo Evidence
 
-Your PR MUST demonstrate the skill working with a real agent. Include:
+Your PR MUST demonstrate the skill working with a skill-enabled agent. Include:
 
 | Requirement | Description |
 |-------------|-------------|
-| **Agent Used** | Which SpoonOS agent class (SpoonReactSkill, SpoonReactMCP, etc.) |
+| **Agent Used** | SpoonReactSkill (recommended), Claude Code, or other skill-enabled agent |
 | **Input Prompt** | The exact user query |
 | **Skill Activation** | How the skill was activated |
 | **Tool Calls** | Which tools were called with what parameters |
